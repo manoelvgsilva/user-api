@@ -1,0 +1,9 @@
+services:
+  mongodb:
+    image: mongo
+    restart: always
+    ports:
+      - 27017:8080
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
