@@ -3,6 +3,19 @@ package com.app.user.controller.dto;
 import com.app.user.entity.User;
 import com.app.user.security.Role;
 
+/**
+ * userdto.
+ *
+ * @param id the id
+ * @param username the username
+ * @param cpf the cpf
+ * @param email the email
+ * @param password the password
+ * @param phone the phone
+ * @param role the role
+ * @param createdBy the createdBy
+ * @param modifiedBy the modifiedBy
+ */
 public record UserDto(
     Long id,
     String username,
@@ -14,6 +27,13 @@ public record UserDto(
     String createdBy,
     String modifiedBy
 ) {
+
+  /**
+   * entity.
+   *
+   * @param user the user
+   * @return user
+   */
   public static UserDto fromEntity(User user) {
     return new UserDto(
         user.getId(),

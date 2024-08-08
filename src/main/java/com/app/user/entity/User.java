@@ -1,17 +1,26 @@
 package com.app.user.entity;
 
 import com.app.user.security.Role;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
 
+/**
+ * user.
+ */
 @Entity
 @Table(name = "users")
 @EntityListeners(AuditingEntityListener.class)
@@ -36,8 +45,22 @@ public class User implements UserDetails {
   @LastModifiedBy
   private String modifiedBy;
 
+  /**
+   * user.
+   */
   public User() {}
 
+  /**
+   * user.
+   *
+   * @param id the id
+   * @param username the username
+   * @param password the password
+   * @param cpf the cpf
+   * @param phone the phone
+   * @param email the email
+   * @param role the role
+   */
   public User(Long id, String username, String password, String cpf,
               String phone, String email,
               Role role) {
@@ -103,13 +126,13 @@ public class User implements UserDetails {
       return false;
     }
     User user = (User) o;
-    return Objects.equals(id, user.id) &&
-        Objects.equals(username, user.username) &&
-        Objects.equals(cpf, user.cpf) &&
-        Objects.equals(email, user.email) &&
-        Objects.equals(password, user.password) &&
-        Objects.equals(phone, user.phone) &&
-        Objects.equals(role, user.role);
+    return Objects.equals(id, user.id)
+        && Objects.equals(username, user.username)
+        && Objects.equals(cpf, user.cpf)
+        && Objects.equals(email, user.email)
+        && Objects.equals(password, user.password)
+        && Objects.equals(phone, user.phone)
+        && Objects.equals(role, user.role);
   }
 
   public String getRoll() {
@@ -137,7 +160,9 @@ public class User implements UserDetails {
   }
 
   /**
-   * @return 
+   * colect.
+   *
+   * @return collection
    */
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -145,7 +170,9 @@ public class User implements UserDetails {
   }
 
   /**
-   * @return 
+   * password.
+   *
+   * @return password
    */
   @Override
   public String getPassword() {
@@ -153,7 +180,9 @@ public class User implements UserDetails {
   }
 
   /**
-   * @return 
+   * username.
+   *
+   * @return username
    */
   @Override
   public String getUsername() {
