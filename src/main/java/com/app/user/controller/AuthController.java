@@ -10,16 +10,30 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * authcontroller.
+ */
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
   private final AuthenticationManager authenticationManager;
 
+  /**
+   * authcontroller.
+   *
+   * @param authenticationManager the autenticationmanager
+   */
   @Autowired
   public AuthController(AuthenticationManager authenticationManager) {
     this.authenticationManager = authenticationManager;
   }
 
+  /**
+   * login.
+   *
+   * @param authDto the authdto
+   * @return login
+   */
   @PostMapping("/login")
   public String login(@RequestBody AuthDto authDto) {
     UsernamePasswordAuthenticationToken usernamePassword =
