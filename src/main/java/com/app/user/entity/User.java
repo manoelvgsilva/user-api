@@ -73,48 +73,116 @@ public class User implements UserDetails {
     this.role = role;
   }
 
-  public Long getId() {
-    return id;
+  @Override
+  public boolean isAccountNonExpired() {
+    return true;
+  }
+
+  @Override
+  public boolean isAccountNonLocked() {
+    return true;
+  }
+
+  @Override
+  public boolean isCredentialsNonExpired() {
+    return true;
+  }
+
+  @Override
+  public boolean isEnabled() {
+    return true;
   }
 
   public void setId(Long id) {
     this.id = id;
   }
 
+  public Long getId() {
+    return id;
+  }
+
   public void setUsername(String username) {
     this.username = username;
   }
 
+  /**
+   * username.
+   *
+   * @return username
+   */
   @Override
-  public boolean isAccountNonExpired() {
-    return false;
+  public String getUsername() {
+    return username;
   }
 
-  @Override
-  public boolean isAccountNonLocked() {
-    return false;
+  public void setCpf(String cpf) {
+    this.cpf = cpf;
   }
 
-  @Override
-  public boolean isCredentialsNonExpired() {
-    return false;
+  public String getCpf() {
+    return cpf;
   }
 
-  @Override
-  public boolean isEnabled() {
-    return false;
+  public void setEmail(String email) {
+    this.email = email;
+  }
+
+  public String getEmail() {
+    return email;
   }
 
   public void setPassword(String password) {
     this.password = password;
   }
 
-  public Role getRole() {
-    return role;
+  /**
+   * password.
+   *
+   * @return password
+   */
+  @Override
+  public String getPassword() {
+    return password;
+  }
+
+  public void setPhone(String phone) {
+    this.phone = phone;
+  }
+
+  public String getPhone() {
+    return phone;
   }
 
   public void setRole(Role role) {
     this.role = role;
+  }
+
+  public Role getRole() {
+    return role;
+  }
+
+  public void setRoll(String roll) {
+    this.roll = roll;
+  }
+
+  public String getRoll() {
+    return roll;
+  }
+
+  public void setCreatedBy(String createdBy) {
+    this.createdBy = createdBy;
+  }
+
+  public String getCreatedBy() {
+    return createdBy;
+  }
+
+  public void setModifiedBy(String modifiedBy) {
+    this.modifiedBy = modifiedBy;
+  }
+
+  public String getModifiedBy() {
+    return modifiedBy;
   }
 
   @Override
@@ -135,30 +203,6 @@ public class User implements UserDetails {
         && Objects.equals(role, user.role);
   }
 
-  public String getRoll() {
-    return roll;
-  }
-
-  public void setRoll(String roll) {
-    this.roll = roll;
-  }
-
-  public String getCreatedBy() {
-    return createdBy;
-  }
-
-  public void setCreatedBy(String createdBy) {
-    this.createdBy = createdBy;
-  }
-
-  public String getModifiedBy() {
-    return modifiedBy;
-  }
-
-  public void setModifiedBy(String modifiedBy) {
-    this.modifiedBy = modifiedBy;
-  }
-
   /**
    * colect.
    *
@@ -167,49 +211,5 @@ public class User implements UserDetails {
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
     return List.of(new SimpleGrantedAuthority(roll));
-  }
-
-  /**
-   * password.
-   *
-   * @return password
-   */
-  @Override
-  public String getPassword() {
-    return password;
-  }
-
-  /**
-   * username.
-   *
-   * @return username
-   */
-  @Override
-  public String getUsername() {
-    return username;
-  }
-
-  public String getEmail() {
-    return email;
-  }
-
-  public void setEmail(String email) {
-    this.email = email;
-  }
-
-  public String getCpf() {
-    return cpf;
-  }
-
-  public void setCpf(String cpf) {
-    this.cpf = cpf;
-  }
-
-  public String getPhone() {
-    return phone;
-  }
-
-  public void setPhone(String phone) {
-    this.phone = phone;
   }
 }

@@ -1,4 +1,4 @@
-package com.app.user.exception;
+package com.app.user.service.exception;
 
 /**
  * usernotfoundexception.
