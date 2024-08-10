@@ -1,6 +1,8 @@
 package com.app.user.controller;
 
 import com.app.user.controller.dto.AuthDto;
+import com.app.user.controller.dto.TokenDto;
+import com.app.user.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/auth")
 public class AuthController {
   private final AuthenticationManager authenticationManager;
+  private final TokenService tokenService;
 
   /**
    * authcontroller.
@@ -24,8 +27,9 @@ public class AuthController {
    * @param authenticationManager the autenticationmanager
    */
   @Autowired
-  public AuthController(AuthenticationManager authenticationManager) {
+  public AuthController(AuthenticationManager authenticationManager, TokenService tokenService) {
     this.authenticationManager = authenticationManager;
+    this.tokenService = tokenService;
   }
 
   /**
@@ -35,13 +39,15 @@ public class AuthController {
    * @return login
    */
   @PostMapping("/login")
-  public String login(@RequestBody AuthDto authDto) {
+  public TokenDto login(@RequestBody AuthDto authDto) {
     UsernamePasswordAuthenticationToken usernamePassword =
         new UsernamePasswordAuthenticationToken(authDto.username(),
             authDto.password());
 
     Authentication auth = authenticationManager.authenticate(usernamePassword);
 
-    return "Pessoa autenticada com sucesso: %s".formatted(auth.getName());
+    String token = tokenService.generateToken(auth.getName());
+
+    return new TokenDto(token);
   }
 }
