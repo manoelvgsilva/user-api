@@ -15,6 +15,9 @@ import org.springframework.stereotype.Service;
 public class TokenService {
   private final Algorithm algorithm;
 
+  @Value("${api.security.token.secret:default-secret}")
+  private String tokenSecret;
+
   /**
    * tokenservice.
    *

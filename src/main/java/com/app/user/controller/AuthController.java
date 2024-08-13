@@ -43,11 +43,8 @@ public class AuthController {
     UsernamePasswordAuthenticationToken usernamePassword =
         new UsernamePasswordAuthenticationToken(authDto.username(),
             authDto.password());
-
     Authentication auth = authenticationManager.authenticate(usernamePassword);
-
     String token = tokenService.generateToken(auth.getName());
-
     return new TokenDto(token);
   }
 }

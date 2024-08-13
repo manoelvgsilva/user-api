@@ -32,6 +32,8 @@ public class User implements UserDetails {
 
   @Column(unique = true)
   private String username;
+
+  @Column(unique = true)
   private String cpf;
   private String email;
   private String password;

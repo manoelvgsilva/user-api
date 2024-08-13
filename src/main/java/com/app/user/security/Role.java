@@ -8,13 +8,13 @@ public enum Role {
   MANAGER("ROLE_MANAGER"),
   USER("ROLE_USER");
 
-  private final String cpf;
+  private final String username;
 
-  Role(String cpf) {
-    this.cpf = cpf;
+  Role(String username) {
+    this.username = username;
   }
 
-  public String getCpf() {
-    return cpf;
+  public String getUsername() {
+    return username;
   }
 }
