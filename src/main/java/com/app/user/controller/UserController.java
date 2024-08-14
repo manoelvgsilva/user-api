@@ -47,10 +47,11 @@ public class UserController {
     return UserDto.fromEntity(saveUser);
   }
 
-  @GetMapping("/{username}")
-  @PreAuthorize("hasAuthority('USER')")
-  public UserDto getUserByUsername(@PathVariable String username) {
-    User getUser = userService.getUserByUsername(username);
+  @GetMapping("/{email}")
+  @PreAuthorize("hasAuthority('ADMIN') or #user.email matches '^[a-zA-Z0-9"
+      + "._-]+@gmail[.]com$'")
+  public UserDto getUserByUsername(@PathVariable String email) {
+    User getUser = userService.getUserByUserEmail(email);
     return UserDto.fromEntity(getUser);
   }
 

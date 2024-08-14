@@ -2,6 +2,7 @@ package com.app.user.service;
 
 import com.app.user.entity.User;
 import com.app.user.repository.UserRepository;
+import com.app.user.service.exception.UserEmailNotFoundException;
 import com.app.user.service.exception.UserNotFoundException;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,16 @@ public class UserService implements UserDetailsService {
     this.userRepository = userRepository;
   }
 
+  @Override
+  public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    User user = userRepository.findByEmail(email)
+        .orElseThrow(() -> new UserEmailNotFoundException(email));
+    return new org.springframework.security.core.userdetails.User(
+        user.getEmail(),
+        user.getPassword(),
+        user.getAuthorities());
+  }
+
   /**
    * createuser.
    *
@@ -35,25 +46,20 @@ public class UserService implements UserDetailsService {
    * @return user
    */
   public User createUser(User user) {
-    String hashPassword =
-        new BCryptPasswordEncoder().encode(user.getPassword());
-    return userRepository.save(user);
-  }
-
-  @Override
-  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    return userRepository.findByUsername(username)
-        .orElseThrow(() -> new UsernameNotFoundException(username));
+    String hashPassword = new BCryptPasswordEncoder().encode(user.getPassword());
+    user.setPassword(hashPassword);
+    userRepository.save(user);
+    return user;
   }
 
   /**
    * getuser.
    *
-   * @param username the username
+   * @param email the email
    * @return user
    */
-  public User getUserByUsername(String username) {
-    Optional<User> user = userRepository.findByUsername(username);
+  public User getUserByUserEmail(String email) {
+    Optional<User> user = userRepository.findByEmail(email);
     if (user.isEmpty()) {
       throw new UserNotFoundException();
     }
