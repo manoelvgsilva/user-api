@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -30,6 +31,7 @@ public class User implements UserDetails {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   private String username;
+  private LocalDate dataNasc;
 
   @Column(unique = true)
   private String cpf;
@@ -59,17 +61,20 @@ public class User implements UserDetails {
    *
    * @param id the id
    * @param username the username
+   * @param dataNasc the datanasc
    * @param password the password
    * @param cpf the cpf
    * @param phone the phone
    * @param email the email
    * @param role the role
    */
-  public User(Long id, String username, String password, String cpf,
+  public User(Long id, String username, LocalDate dataNasc, String password,
+              String cpf,
               String phone, String email,
               Role role) {
     this.id = id;
     this.username = username;
+    this.dataNasc = dataNasc;
     this.cpf = cpf;
     this.email = email;
     this.password = password;
@@ -117,6 +122,14 @@ public class User implements UserDetails {
   @Override
   public String getUsername() {
     return username;
+  }
+
+  public void setDataNasc(LocalDate dataNasc) {
+    this.dataNasc = dataNasc;
+  }
+
+  public LocalDate getDataNasc() {
+    return dataNasc;
   }
 
   public void setCpf(String cpf) {
@@ -200,6 +213,7 @@ public class User implements UserDetails {
     User user = (User) o;
     return Objects.equals(id, user.id)
         && Objects.equals(username, user.username)
+        && Objects.equals(dataNasc, user.dataNasc)
         && Objects.equals(cpf, user.cpf)
         && Objects.equals(email, user.email)
         && Objects.equals(password, user.password)

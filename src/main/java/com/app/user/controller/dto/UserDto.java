@@ -2,12 +2,14 @@ package com.app.user.controller.dto;
 
 import com.app.user.entity.User;
 import com.app.user.security.Role;
+import java.time.LocalDate;
 
 /**
  * userdto.
  *
  * @param id the id
  * @param username the username
+ * @param dataNasc the datanasc
  * @param cpf the cpf
  * @param email the email
  * @param password the password
@@ -19,6 +21,7 @@ import com.app.user.security.Role;
 public record UserDto(
     Long id,
     String username,
+    LocalDate dataNasc,
     String cpf,
     String email,
     String password,
@@ -38,6 +41,7 @@ public record UserDto(
     return new UserDto(
         user.getId(),
         user.getUsername(),
+        user.getDataNasc(),
         user.getCpf(),
         user.getEmail(),
         user.getPassword(),
