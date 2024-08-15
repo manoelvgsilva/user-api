@@ -4,6 +4,8 @@ import com.app.user.controller.dto.UserCreationDto;
 import com.app.user.controller.dto.UserDto;
 import com.app.user.entity.User;
 import com.app.user.service.UserService;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -48,17 +50,28 @@ public class UserController {
   }
 
   @GetMapping("/{email}")
-  @PreAuthorize("hasAuthority('ADMIN') or #user.email matches '^[a-zA-Z0-9"
-      + "._-]+@gmail[.]com$'")
   public UserDto getUserByUsername(@PathVariable String email) {
     User getUser = userService.getUserByUserEmail(email);
     return UserDto.fromEntity(getUser);
   }
 
   @PutMapping("/{cpf}")
-  @PreAuthorize("hasAuthority('USER')")
   public UserDto upUserByCpf(@PathVariable String cpf) {
     User upUser = userService.upUserByCpf(cpf);
     return UserDto.fromEntity(upUser);
+  }
+
+  /**
+   * getallusers.
+   *
+   * @return allusers
+   */
+  @GetMapping
+  @PreAuthorize("hasAuthority('ADMIN') or #user.email matches '^[a-zA-Z0-9"
+      + "._-]+@gmail[.]com$'")
+  public List<UserDto> getAllUsers() {
+    return userService.getAllUser().stream()
+        .map(UserDto::fromEntity)
+        .collect(Collectors.toList());
   }
 }

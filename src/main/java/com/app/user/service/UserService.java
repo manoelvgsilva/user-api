@@ -4,6 +4,7 @@ import com.app.user.entity.User;
 import com.app.user.repository.UserRepository;
 import com.app.user.service.exception.UserEmailNotFoundException;
 import com.app.user.service.exception.UserNotFoundException;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -79,7 +80,12 @@ public class UserService implements UserDetailsService {
     }
     User upUser = user.get();
     upUser.setUsername(upUser.getUsername());
+    upUser.setDataNasc(upUser.getDataNasc());
     upUser.setPhone(upUser.getPhone());
     return upUser;
+  }
+
+  public List<User> getAllUser() {
+    return userRepository.findAll();
   }
 }
