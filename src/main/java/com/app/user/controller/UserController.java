@@ -67,8 +67,7 @@ public class UserController {
    * @return allusers
    */
   @GetMapping
-  @PreAuthorize("hasAuthority('ADMIN') or #user.email matches '^[a-zA-Z0-9"
-      + "._-]+@gmail[.]com$'")
+  @PreAuthorize("hasAuthority('ADMIN') or #user.email matches '^[a-zA-Z0-9._-]+@gmail\\.com$'")
   public List<UserDto> getAllUsers() {
     return userService.getAllUser().stream()
         .map(UserDto::fromEntity)
