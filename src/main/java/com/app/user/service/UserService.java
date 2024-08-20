@@ -82,6 +82,7 @@ public class UserService implements UserDetailsService {
     upUser.setUsername(upUser.getUsername());
     upUser.setDataNasc(upUser.getDataNasc());
     upUser.setPhone(upUser.getPhone());
+    userRepository.save(upUser);
     return upUser;
   }
 
