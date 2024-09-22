@@ -1,7 +1,7 @@
 spring:
   kafka:
     user:
-      bootstrap-servers: localhost:9092
+      bootstrap-servers: localhost:9191
       group-id: group_id
       key-serializer: org.apache.kafka.common.serialization.StringDeserializer
       value-serializer: org.apache.kafka.common.serialization.StringDeserializer
