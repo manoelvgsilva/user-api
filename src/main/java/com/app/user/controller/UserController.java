@@ -56,8 +56,8 @@ public class UserController {
   }
 
   @PutMapping("/{cpf}")
-  public UserDto upUserByCpf(@PathVariable String cpf) {
-    User upUser = userService.upUserByCpf(cpf);
+  public UserDto upUserByCpf(@PathVariable String cpf, @RequestBody User userDetails) {
+    User upUser = userService.upUserByCpf(cpf, userDetails);
     return UserDto.fromEntity(upUser);
   }
 

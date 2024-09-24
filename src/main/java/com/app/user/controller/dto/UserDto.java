@@ -3,6 +3,7 @@ package com.app.user.controller.dto;
 import com.app.user.entity.User;
 import com.app.user.security.Role;
 import java.time.LocalDate;
+import org.bson.types.ObjectId;
 
 /**
  * userdto.
@@ -19,7 +20,7 @@ import java.time.LocalDate;
  * @param modifiedBy the modifiedBy
  */
 public record UserDto(
-    Long id,
+    ObjectId id,
     String username,
     LocalDate dataNasc,
     String cpf,

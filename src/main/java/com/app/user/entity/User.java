@@ -12,6 +12,7 @@ import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -29,7 +30,7 @@ public class User implements UserDetails {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  private ObjectId id;
   private String username;
   private LocalDate dataNasc;
 
@@ -68,7 +69,7 @@ public class User implements UserDetails {
    * @param email the email
    * @param role the role
    */
-  public User(Long id, String username, LocalDate dataNasc, String password,
+  public User(ObjectId id, String username, LocalDate dataNasc, String password,
               String cpf,
               String phone, String email,
               Role role) {
@@ -102,11 +103,11 @@ public class User implements UserDetails {
     return true;
   }
 
-  public void setId(Long id) {
+  public void setId(ObjectId id) {
     this.id = id;
   }
 
-  public Long getId() {
+  public ObjectId getId() {
     return id;
   }
 

@@ -73,17 +73,17 @@ public class UserService implements UserDetailsService {
    * @param cpf the cpf
    * @return user
    */
-  public User upUserByCpf(String cpf) {
-    Optional<User> user = userRepository.findByCpf(cpf);
-    if (user.isEmpty()) {
+  public User upUserByCpf(String cpf, User userDetails) {
+    Optional<User> optionalUser = userRepository.findByCpf(cpf);
+    if (optionalUser.isEmpty()) {
       throw new UserNotFoundException();
     }
-    User upUser = user.get();
-    upUser.setUsername(upUser.getUsername());
-    upUser.setDataNasc(upUser.getDataNasc());
-    upUser.setPhone(upUser.getPhone());
-    userRepository.save(upUser);
-    return upUser;
+    User user = optionalUser.get();
+    user.setUsername(userDetails.getUsername());
+    user.setDataNasc(userDetails.getDataNasc());
+    user.setPhone(userDetails.getPhone());
+    userRepository.save(user);
+    return user;
   }
 
   public List<User> getAllUser() {
