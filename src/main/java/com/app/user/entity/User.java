@@ -1,21 +1,13 @@
 package com.app.user.entity;
 
 import com.app.user.security.Role;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import org.bson.types.ObjectId;
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.LastModifiedBy;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,33 +15,20 @@ import org.springframework.security.core.userdetails.UserDetails;
 /**
  * user.
  */
-@Entity
-@Table(name = "users")
-@EntityListeners(AuditingEntityListener.class)
+@Document(collection = "users")
 public class User implements UserDetails {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private ObjectId id;
   private String username;
   private LocalDate dataNasc;
-
-  @Column(unique = true)
   private String cpf;
-
-  @Column(unique = true)
   private String email;
   private String password;
-
-  @Column(unique = true)
   private String phone;
   private Role role;
   private String roll;
-
-  @CreatedBy
   private String createdBy;
-
-  @LastModifiedBy
   private String modifiedBy;
 
   /**
