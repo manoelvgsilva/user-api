@@ -20,7 +20,7 @@ import org.bson.types.ObjectId;
  * @param modifiedBy the modifiedBy
  */
 public record UserDto(
-    ObjectId id,
+    String id,
     String username,
     LocalDate dataNasc,
     String cpf,

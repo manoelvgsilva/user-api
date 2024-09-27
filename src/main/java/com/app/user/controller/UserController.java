@@ -45,8 +45,8 @@ public class UserController {
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   public UserDto createUser(@RequestBody UserCreationDto userCreationDto) {
-    User saveUser = userService.createUser(userCreationDto.toEntity());
-    return UserDto.fromEntity(saveUser);
+    User savedUser = userService.createUser(userCreationDto.toEntity());
+    return UserDto.fromEntity(savedUser);
   }
 
   @GetMapping("/{email}")

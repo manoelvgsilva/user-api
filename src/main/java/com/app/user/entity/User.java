@@ -86,8 +86,8 @@ public class User implements UserDetails {
     this.id = id;
   }
 
-  public ObjectId getId() {
-    return id;
+  public String getId() {
+    return id != null ? id.toHexString() : null;
   }
 
   public void setUsername(String username) {

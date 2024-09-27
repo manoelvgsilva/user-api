@@ -49,8 +49,7 @@ public class UserService implements UserDetailsService {
   public User createUser(User user) {
     String hashPassword = new BCryptPasswordEncoder().encode(user.getPassword());
     user.setPassword(hashPassword);
-    userRepository.save(user);
-    return user;
+    return userRepository.save(user);
   }
 
   /**
