@@ -28,8 +28,6 @@ public class User implements UserDetails {
   private String phone;
   private Role role;
   private String roll;
-  private String createdBy;
-  private String modifiedBy;
 
   /**
    * user.
@@ -166,22 +164,6 @@ public class User implements UserDetails {
     return roll;
   }
 
-  public void setCreatedBy(String createdBy) {
-    this.createdBy = createdBy;
-  }
-
-  public String getCreatedBy() {
-    return createdBy;
-  }
-
-  public void setModifiedBy(String modifiedBy) {
-    this.modifiedBy = modifiedBy;
-  }
-
-  public String getModifiedBy() {
-    return modifiedBy;
-  }
-
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -208,6 +190,6 @@ public class User implements UserDetails {
    */
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    return List.of(new SimpleGrantedAuthority(roll));
+    return List.of(new SimpleGrantedAuthority(role.getUsername()));
   }
 }

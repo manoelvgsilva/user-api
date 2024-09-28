@@ -3,7 +3,6 @@ package com.app.user.controller.dto;
 import com.app.user.entity.User;
 import com.app.user.security.Role;
 import java.time.LocalDate;
-import org.bson.types.ObjectId;
 
 /**
  * userdto.
@@ -16,8 +15,6 @@ import org.bson.types.ObjectId;
  * @param password the password
  * @param phone the phone
  * @param role the role
- * @param createdBy the createdBy
- * @param modifiedBy the modifiedBy
  */
 public record UserDto(
     String id,
@@ -27,9 +24,7 @@ public record UserDto(
     String email,
     String password,
     String phone,
-    Role role,
-    String createdBy,
-    String modifiedBy
+    Role role
 ) {
 
   /**
@@ -47,9 +42,7 @@ public record UserDto(
         user.getEmail(),
         user.getPassword(),
         user.getPhone(),
-        user.getRole(),
-        user.getCreatedBy(),
-        user.getModifiedBy()
+        user.getRole()
     );
   }
 }

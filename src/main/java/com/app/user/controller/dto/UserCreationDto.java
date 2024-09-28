@@ -31,7 +31,6 @@ public record UserCreationDto(
    * @return entity
    */
   public User toEntity() {
-    return new User(null, username, dataNasc, cpf,  email, password, phone,
-        role);
+    return new User(null, username, dataNasc, password, cpf, phone, email, role);
   }
 }

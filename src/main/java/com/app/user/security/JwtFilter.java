@@ -1,7 +1,7 @@
 package com.app.user.security;
 
+import com.app.user.service.AuthService;
 import com.app.user.service.TokenService;
-import com.app.user.service.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,39 +22,20 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @Component
 public class JwtFilter extends OncePerRequestFilter {
   private final TokenService tokenService;
-  private final UserService userService;
+  private final AuthService authService;
 
   /**
    * jwtfilter.
    *
    * @param tokenService the tokenservice
-   * @param userService the userservice
+   * @param authService the authservice
    */
   @Autowired
-  public JwtFilter(TokenService tokenService, UserService userService) {
+  public JwtFilter(@Lazy TokenService tokenService, @Lazy AuthService authService) {
     this.tokenService = tokenService;
-    this.userService = userService;
+    this.authService = authService;
   }
 
-  private Optional<String> extractToken(HttpServletRequest request) {
-    String authHeader = request.getHeader("Authorization");
-    if (authHeader == null) {
-      return Optional.empty();
-    }
-    return Optional.of(
-        authHeader.replace("Bearer ", "")
-    );
-  }
-
-  /**
-   * dointernal.
-   *
-   * @param request the request
-   * @param response the response
-   * @param filterChain the filterchain
-   * @throws ServletException the servletexception
-   * @throws IOException the ioexception
-   */
   @Override
   protected void doFilterInternal(
       HttpServletRequest request,
@@ -63,11 +45,19 @@ public class JwtFilter extends OncePerRequestFilter {
     Optional<String> token = extractToken(request);
     if (token.isPresent()) {
       String subject = tokenService.validateToken(token.get());
-      UserDetails userDetails = userService.loadUserByUsername(subject);
+      UserDetails userDetails = authService.getAuthenticatedUser(subject);
       UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
           userDetails, null, userDetails.getAuthorities());
       SecurityContextHolder.getContext().setAuthentication(authentication);
     }
     filterChain.doFilter(request, response);
+  }
+
+  private Optional<String> extractToken(HttpServletRequest request) {
+    String authHeader = request.getHeader("Authorization");
+    if (authHeader == null) {
+      return Optional.empty();
+    }
+    return Optional.of(authHeader.replace("Bearer ", ""));
   }
 }
