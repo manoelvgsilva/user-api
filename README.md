@@ -14,7 +14,7 @@ Kafka
 # Instalação
 
 1. Clone o repositório:
-   ```bash
+   ```zsh
    git clone https://github.com/manoelvgsilva/user-api.git
    ```
 
@@ -24,12 +24,12 @@ Kafka
    ```
 
 3. Instale as dependências:
-   ```bash
+   ```zsh
    mvn install
    ```
 
 5. Para rodar em Docker:
-   ```bash
+   ```zsh
    docker-compose up -d
    ```
 
@@ -46,7 +46,7 @@ Kafka
 - `PUT /users/{cpf}`: Faz atualização de dados de um usuario.
 
 #### Exemplo de requisição para criar um pedido:
-```bash
+```zsh
 curl -X POST http://localhost:8080/users
 -H "Content-Type: application/json" \
 -d '{
