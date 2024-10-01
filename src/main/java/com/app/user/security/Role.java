@@ -8,13 +8,13 @@ public enum Role {
   MANAGER("ROLE_MANAGER"),
   USER("ROLE_USER");
 
-  private final String username;
+  private final String email;
 
-  Role(String username) {
-    this.username = username;
+  Role(String email) {
+    this.email = email;
   }
 
-  public String getUsername() {
-    return username;
+  public String getEmail() {
+    return email;
   }
 }

@@ -35,7 +35,7 @@ public class UserService implements UserDetailsService {
 
   @Override
   public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-    User user = userRepository.findByUsername(email)
+    User user = userRepository.findByEmail(email)
         .orElseThrow(() -> new UserEmailNotFoundException(email));
     return new org.springframework.security.core.userdetails.User(
         user.getEmail(),
@@ -65,7 +65,7 @@ public class UserService implements UserDetailsService {
    * @return the user entity
    */
   public User getUserByUserEmail(String email) {
-    return userRepository.findByUsername(email)
+    return userRepository.findByEmail(email)
         .orElseThrow(() -> new UserNotFoundException("User with email " + email + " not found"));
   }
 

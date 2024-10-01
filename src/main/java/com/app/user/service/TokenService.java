@@ -31,12 +31,12 @@ public class TokenService {
   /**
    * generatedtoken.
    *
-   * @param username the username
+   * @param email the email
    * @return token
    */
-  public String generateToken(String username) {
+  public String generateToken(String email) {
     return JWT.create()
-        .withSubject(username)
+        .withSubject(email)
         .withExpiresAt(generateExpiration())
         .sign(algorithm);
   }

@@ -21,15 +21,10 @@ import org.springframework.web.filter.OncePerRequestFilter;
  */
 @Component
 public class JwtFilter extends OncePerRequestFilter {
+
   private final TokenService tokenService;
   private final AuthService authService;
 
-  /**
-   * jwtfilter.
-   *
-   * @param tokenService the tokenservice
-   * @param authService the authservice
-   */
   @Autowired
   public JwtFilter(@Lazy TokenService tokenService, @Lazy AuthService authService) {
     this.tokenService = tokenService;

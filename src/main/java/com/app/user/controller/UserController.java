@@ -7,6 +7,7 @@ import com.app.user.service.UserService;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,15 +25,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/users")
 public class UserController {
-  private final UserService userService;
 
-  /**
-   * usercontroller.
-   *
-   * @param userService the userservice
-   */
   @Autowired
-  public UserController(UserService userService) {
+  @Lazy
+  private UserService userService;
+
+  @Autowired
+  public void setUserService(@Lazy UserService userService) {
     this.userService = userService;
   }
 
@@ -67,7 +66,7 @@ public class UserController {
    * @return allusers
    */
   @GetMapping
-  @PreAuthorize("hasAuthority('ADMIN') or #user.email matches '^[a-zA-Z0-9._-]+@gmail\\.com$'")
+  @PreAuthorize("hasAuthority('ADMIN')")
   public List<UserDto> getAllUsers() {
     return userService.getAllUser().stream()
         .map(UserDto::fromEntity)

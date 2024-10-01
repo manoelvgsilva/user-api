@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-
 /**
  * authcontroller.
  */
@@ -44,10 +43,10 @@ public class AuthController {
   @PostMapping("/login")
   @ResponseStatus(HttpStatus.CREATED)
   public TokenDto login(@RequestBody AuthDto authDto) {
-    UsernamePasswordAuthenticationToken usernamePassword =
-        new UsernamePasswordAuthenticationToken(authDto.username(),
+    UsernamePasswordAuthenticationToken emailPassword =
+        new UsernamePasswordAuthenticationToken(authDto.email(),
             authDto.password());
-    Authentication auth = authenticationManager.authenticate(usernamePassword);
+    Authentication auth = authenticationManager.authenticate(emailPassword);
     String token = tokenService.generateToken(auth.getName());
     return new TokenDto(token);
   }
