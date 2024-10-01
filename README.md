@@ -28,12 +28,12 @@ Kafka
    mvn install
    ```
 
-5. Para rodar em Docker:
+4. Para rodar em Docker:
    ```zsh
    docker-compose up -d
    ```
 
-4. Inicie a aplicação:
+5. Inicie a aplicação:
    ```zsh
    mvn spring-boot:run
    ```
@@ -45,7 +45,7 @@ Kafka
 - `GET /users/{email}`: Retorna um usuario especifico atraves do email.
 - `PUT /users/{cpf}`: Faz atualização de dados de um usuario.
 
-#### Exemplo de requisição para criar um pedido:
+#### Exemplo de requisição para criar um usuario:
 ```zsh
 curl -X POST http://localhost:8080/users
 -H "Content-Type: application/json" \
