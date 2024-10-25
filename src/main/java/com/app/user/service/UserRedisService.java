@@ -1,6 +1,5 @@
 package com.app.user.service;
 
-import com.app.user.entity.User;
 import com.app.user.entity.UserRedis;
 import com.app.user.repository.UserRedisRepository;
 import com.app.user.service.exception.UserEmailNotFoundException;

@@ -22,7 +22,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@RedisHash
+@RedisHash("userredis")
 public class UserRedis implements UserDetails {
 
   @Id
