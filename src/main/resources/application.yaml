@@ -5,6 +5,11 @@ spring:
       group-id: group_id
       key-serializer: org.apache.kafka.common.serialization.StringDeserializer
       value-serializer: org.apache.kafka.common.serialization.StringDeserializer
+    cache:
+      type: redis
+      redis:
+        host: localhost
+        port: 6379
 
 topic:
   user:user
