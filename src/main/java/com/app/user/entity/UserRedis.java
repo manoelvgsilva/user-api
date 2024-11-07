@@ -5,12 +5,9 @@ import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
+import org.springframework.data.redis.core.index.Indexed;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,19 +15,18 @@ import org.springframework.security.core.userdetails.UserDetails;
 /**
  * userredis.
  */
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
 @RedisHash("userredis")
 public class UserRedis implements UserDetails {
 
   @Id
+  @Indexed
   private String id;
   private String username;
   private LocalDate dataNasc;
-  private String cpf;
+  @Indexed
   private String email;
+  @Indexed
+  private String cpf;
   private String password;
   private String phone;
   private Role role;
@@ -134,17 +130,13 @@ public class UserRedis implements UserDetails {
    */
   @Override
   public String getPassword() {
-    return "";
+    return this.password;
   }
 
-  /**
-   * getusername.
-   *
-   * @return username
-   */
+
   @Override
   public String getUsername() {
-    return "";
+    return this.username;
   }
 
   /**

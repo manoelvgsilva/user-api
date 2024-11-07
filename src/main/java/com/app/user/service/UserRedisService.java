@@ -1,35 +1,74 @@
 package com.app.user.service;
 
+import com.app.user.entity.User;
 import com.app.user.entity.UserRedis;
 import com.app.user.repository.UserRedisRepository;
 import com.app.user.service.exception.UserEmailNotFoundException;
 import com.app.user.service.exception.UserNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
+import lombok.extern.log4j.Log4j2;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 /**
  * Service class for managing users.
  */
+@Log4j2
+@EnableScheduling
 @Service
 public class UserRedisService implements UserDetailsService {
+  private final int min = 1000 * 60;
+  private final long mins = min * 1;
   private final UserRedisRepository userRedisRepository;
+  private final UserService userService;
   private final PasswordEncoder passwordEncoder;
+  private final ModelMapper modelMapper;
 
-  public UserRedisService(UserRedisRepository userRedisRepository,
-                          PasswordEncoder passwordEncoder) {
+  /**
+   * userredisservice.
+   *
+   * @param userRedisRepository the userredisrepository
+   * @param userService the userservice
+   * @param passwordEncoder the passwordencoder
+   * @param modelMapper the modelmapper
+   */
+  @Autowired
+  public UserRedisService(UserRedisRepository userRedisRepository, UserService userService,
+                          PasswordEncoder passwordEncoder, ModelMapper modelMapper) {
     this.userRedisRepository = userRedisRepository;
+    this.userService = userService;
     this.passwordEncoder = passwordEncoder;
+    this.modelMapper = modelMapper;
   }
 
-  @Override
+  /**
+   * loaduserbyusername.
+   *
+   * @param email the email
+   * @return user
+   * @throws UsernameNotFoundException the usernamenotfoundexception
+   */
   public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
     UserRedis user = userRedisRepository.findByEmail(email)
-        .orElseThrow(() -> new UserEmailNotFoundException(email));
+        .orElseGet(() -> {
+          User mongoUser = userService.getUserByUserEmail(email);
+          if (mongoUser != null) {
+            UserRedis cachedUser = modelMapper.map(mongoUser, UserRedis.class);
+            userRedisRepository.save(cachedUser);
+            return cachedUser;
+          }
+          throw new UserEmailNotFoundException(email);
+        });
     return new org.springframework.security.core.userdetails.User(
         user.getEmail(),
         user.getPassword(),
@@ -86,5 +125,26 @@ public class UserRedisService implements UserDetailsService {
    */
   public List<UserRedis> getAllUser() {
     return (List<UserRedis>) userRedisRepository.findAll();
+  }
+
+  /**
+   * mergeuserlist.
+   */
+  @Scheduled(fixedDelay = mins)
+  public void mergeUserList() {
+    List<UserRedis> listUserRedis = (List<UserRedis>) userRedisRepository.findAll();
+    if (CollectionUtils.isEmpty(listUserRedis)){
+      log.info("lista de usuarios nula ou invalida!");
+    } else {
+      List<User> listUser = new ArrayList<>();
+    listUserRedis.stream().forEach(
+        userRedis -> {
+          User user = modelMapper.map(userRedis, User.class);
+          listUser.add(user);
+        }
+    );
+    userService.saveAll(listUser);
+    userRedisRepository.deleteAll(listUserRedis);
+    }
   }
 }

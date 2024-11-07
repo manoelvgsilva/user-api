@@ -94,4 +94,8 @@ public class UserService implements UserDetailsService {
   public List<User> getAllUser() {
     return userRepository.findAll();
   }
+
+  public void saveAll(List<User> userList) {
+    userRepository.saveAll(userList);
+  }
 }

@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import org.bson.types.ObjectId;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -22,9 +23,12 @@ public class User implements UserDetails {
   private ObjectId id;
   private String username;
   private LocalDate dataNasc;
+  @Indexed(unique = true)
   private String cpf;
+  @Indexed(unique = true)
   private String email;
   private String password;
+  @Indexed(unique = true)
   private String phone;
   private Role role;
   private String roll;
