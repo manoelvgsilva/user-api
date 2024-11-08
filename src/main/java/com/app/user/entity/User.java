@@ -6,7 +6,6 @@ import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
@@ -20,7 +19,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class User implements UserDetails {
 
   @Id
-  private ObjectId id;
+  private String id;
   private String username;
   private LocalDate dataNasc;
   @Indexed(unique = true)
@@ -50,7 +49,7 @@ public class User implements UserDetails {
    * @param email the email
    * @param role the role
    */
-  public User(ObjectId id, String username, LocalDate dataNasc, String password,
+  public User(String id, String username, LocalDate dataNasc, String password,
               String cpf,
               String phone, String email,
               Role role) {
@@ -84,12 +83,12 @@ public class User implements UserDetails {
     return true;
   }
 
-  public void setId(ObjectId id) {
+  public void setId(String id) {
     this.id = id;
   }
 
   public String getId() {
-    return id != null ? id.toHexString() : null;
+    return id;
   }
 
   public void setUsername(String username) {

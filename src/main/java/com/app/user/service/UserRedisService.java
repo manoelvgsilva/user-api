@@ -17,7 +17,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 /**
@@ -63,7 +62,7 @@ public class UserRedisService implements UserDetailsService {
         .orElseGet(() -> {
           User mongoUser = userService.getUserByUserEmail(email);
           if (mongoUser != null) {
-            UserRedis cachedUser = modelMapper.map(mongoUser, UserRedis.class);
+            UserRedis cachedUser = convertToUserRedis(mongoUser);
             userRedisRepository.save(cachedUser);
             return cachedUser;
           }
@@ -127,24 +126,34 @@ public class UserRedisService implements UserDetailsService {
     return (List<UserRedis>) userRedisRepository.findAll();
   }
 
+  public UserRedis convertToUserRedis(User user) {
+    UserRedis userRedis = new UserRedis(user.getId(), user.getUsername(),
+        user.getDataNasc(), user.getCpf(), user.getEmail(),
+        user.getPassword(), user.getPhone(), user.getRole());
+    return userRedis;
+  }
+
+  public User convertToUser(UserRedis userRedis) {
+    return new User(userRedis.getId(), userRedis.getUsername(),
+        userRedis.getDataNasc(), userRedis.getCpf(),
+        userRedis.getEmail(), userRedis.getPassword(),
+        userRedis.getPhone(), userRedis.getRole());
+  }
+
   /**
    * mergeuserlist.
    */
   @Scheduled(fixedDelay = mins)
   public void mergeUserList() {
     List<UserRedis> listUserRedis = (List<UserRedis>) userRedisRepository.findAll();
-    if (CollectionUtils.isEmpty(listUserRedis)){
-      log.info("lista de usuarios nula ou invalida!");
-    } else {
-      List<User> listUser = new ArrayList<>();
+    List<User> listUser = new ArrayList<>();
     listUserRedis.stream().forEach(
         userRedis -> {
-          User user = modelMapper.map(userRedis, User.class);
+          User user = convertToUser(userRedis);
           listUser.add(user);
         }
     );
     userService.saveAll(listUser);
     userRedisRepository.deleteAll(listUserRedis);
-    }
   }
 }
