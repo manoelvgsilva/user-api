@@ -19,6 +19,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class User implements UserDetails {
 
   @Id
+  @Indexed(unique = true)
   private String id;
   private String username;
   private LocalDate dataNasc;

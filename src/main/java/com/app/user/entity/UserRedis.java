@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.index.Indexed;
@@ -15,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 /**
  * userredis.
  */
+@Primary
 @RedisHash("userredis")
 public class UserRedis implements UserDetails {
 
@@ -28,6 +31,7 @@ public class UserRedis implements UserDetails {
   @Indexed
   private String cpf;
   private String password;
+  @Indexed
   private String phone;
   private Role role;
   private String roll;

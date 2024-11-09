@@ -20,57 +20,68 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * usercontroller.
+ * Controller for managing Redis-cached users.
  */
 @RestController
 @RequestMapping("/usersredis")
 public class UserRedisController {
 
-  @Autowired
-  @Lazy
-  private UserRedisService userRedisService;
+  private final UserRedisService userRedisService;
 
   @Autowired
-  public void setUserRedisService(@Lazy UserRedisService userRedisService) {
+  public UserRedisController(@Lazy UserRedisService userRedisService) {
     this.userRedisService = userRedisService;
   }
 
   /**
-   * createuser.
+   * Creates a new user in Redis cache.
    *
-   * @param userRedisCreationDto the userrediscreationdto
-   * @return user
+   * @param userRedisCreationDto the data transfer object for user creation
+   * @return the created user as a DTO
    */
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   public UserRedisDto createUser(@RequestBody UserRedisCreationDto userRedisCreationDto) {
-    UserRedis savedUser =
-        userRedisService.createUser(userRedisCreationDto.toEntity());
+    UserRedis savedUser = userRedisService.createUser(userRedisCreationDto.toEntity());
     return UserRedisDto.fromEntity(savedUser);
   }
 
+  /**
+   * Retrieves a user by email.
+   *
+   * @param email the email to search for
+   * @return the user as a DTO
+   */
   @GetMapping("/{email}")
-  public UserRedisDto getUserByUsername(@PathVariable String email) {
-    UserRedis getUser = userRedisService.getUserByUserEmail(email);
-    return UserRedisDto.fromEntity(getUser);
-  }
-
-  @PutMapping("/{cpf}")
-  public UserRedisDto upUserByCpf(@PathVariable String cpf,
-                              @RequestBody UserRedis userDetails) {
-    UserRedis upUser = userRedisService.upUserByCpf(cpf, userDetails);
-    return UserRedisDto.fromEntity(upUser);
+  public UserRedisDto getUserByEmail(@PathVariable String email) {
+    UserRedis user = userRedisService.getUserByUserEmail(email);
+    return UserRedisDto.fromEntity(user);
   }
 
   /**
-   * getallusers.
+   * Updates user information based on CPF.
    *
-   * @return allusers
+   * @param cpf the CPF to search for
+   * @param userDetails the new user details
+   * @return the updated user as a DTO
+   */
+  @PutMapping("/{cpf}")
+  public UserRedisDto updateUserByCpf(
+      @PathVariable String cpf,
+      @RequestBody UserRedis userDetails) {
+    UserRedis updatedUser = userRedisService.updateUserByCpf(cpf, userDetails);
+    return UserRedisDto.fromEntity(updatedUser);
+  }
+
+  /**
+   * Retrieves all users from Redis cache.
+   *
+   * @return a list of users as DTOs
    */
   @GetMapping
   @PreAuthorize("hasAuthority('ADMIN')")
   public List<UserRedisDto> getAllUsers() {
-    return userRedisService.getAllUser().stream()
+    return userRedisService.getAllUsers().stream()
         .map(UserRedisDto::fromEntity)
         .collect(Collectors.toList());
   }
