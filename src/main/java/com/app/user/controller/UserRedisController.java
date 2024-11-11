@@ -7,6 +7,8 @@ import com.app.user.service.UserRedisService;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -41,6 +43,7 @@ public class UserRedisController {
    */
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
+  @CachePut(value = "userRedis", key = "#userRedisCreationDto.email")
   public UserRedisDto createUser(@RequestBody UserRedisCreationDto userRedisCreationDto) {
     UserRedis savedUser = userRedisService.createUser(userRedisCreationDto.toEntity());
     return UserRedisDto.fromEntity(savedUser);
@@ -53,6 +56,7 @@ public class UserRedisController {
    * @return the user as a DTO
    */
   @GetMapping("/{email}")
+  @Cacheable(value = "userRedis", key = "#email")
   public UserRedisDto getUserByEmail(@PathVariable String email) {
     UserRedis user = userRedisService.getUserByUserEmail(email);
     return UserRedisDto.fromEntity(user);
@@ -61,11 +65,12 @@ public class UserRedisController {
   /**
    * Updates user information based on CPF.
    *
-   * @param cpf the CPF to search for
+   * @param cpf         the CPF to search for
    * @param userDetails the new user details
    * @return the updated user as a DTO
    */
   @PutMapping("/{cpf}")
+  @CachePut(value = "userRedis", key = "#userDetails.cpf")
   public UserRedisDto updateUserByCpf(
       @PathVariable String cpf,
       @RequestBody UserRedis userDetails) {

@@ -1,11 +1,11 @@
 package com.app.user.entity;
 
 import com.app.user.security.Role;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
@@ -15,26 +15,52 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 /**
- * userredis.
+ * Entidade UserRedis para armazenamento no Redis.
  */
 @Primary
 @RedisHash("userredis")
-public class UserRedis implements UserDetails {
+public class UserRedis implements UserDetails, Serializable {
+
+  private static final long serialVersionUID = 1L;
 
   @Id
   @Indexed
   private String id;
+
+  @Indexed
   private String username;
+
   private LocalDate dataNasc;
+
   @Indexed
   private String email;
+
   @Indexed
   private String cpf;
+
   private String password;
+
   @Indexed
   private String phone;
+
   private Role role;
+
   private String roll;
+
+  public UserRedis() {}
+
+  public UserRedis(String id, String username, LocalDate dataNasc,
+                   String password, String cpf, String phone,
+                   String email, Role role) {
+    this.id = id;
+    this.username = username;
+    this.dataNasc = dataNasc;
+    this.cpf = cpf;
+    this.email = email;
+    this.password = password;
+    this.phone = phone;
+    this.role = role;
+  }
 
   public String getId() {
     return id;
@@ -42,6 +68,11 @@ public class UserRedis implements UserDetails {
 
   public void setId(String id) {
     this.id = id;
+  }
+
+  @Override
+  public String getUsername() {
+    return username;
   }
 
   public void setUsername(String username) {
@@ -70,6 +101,11 @@ public class UserRedis implements UserDetails {
 
   public void setEmail(String email) {
     this.email = email;
+  }
+
+  @Override
+  public String getPassword() {
+    return password;
   }
 
   public void setPassword(String password) {
@@ -101,85 +137,31 @@ public class UserRedis implements UserDetails {
   }
 
   /**
-   * user.
-   *
-   * @param id the id
-   * @param username the username
-   * @param dataNasc the datanasc
-   * @param password the password
-   * @param cpf the cpf
-   * @param phone the phone
-   * @param email the email
-   * @param role the role
-   */
-  public UserRedis(String id, String username, LocalDate dataNasc,
-               String password,
-              String cpf,
-              String phone, String email,
-              Role role) {
-    this.id = id;
-    this.username = username;
-    this.dataNasc = dataNasc;
-    this.cpf = cpf;
-    this.email = email;
-    this.password = password;
-    this.phone = phone;
-    this.role = role;
-  }
-
-  /**
-   * getPassword.
-   *
-   * @return password
+   * Retorna as autoridades do usuário com base no seu papel (role).
    */
   @Override
-  public String getPassword() {
-    return this.password;
+  public Collection<? extends GrantedAuthority> getAuthorities() {
+    return List.of(new SimpleGrantedAuthority(role.getEmail()));
   }
 
-  @Override
-  public String getUsername() {
-    return this.username;
-  }
-
-  /**
-   * dateexpireted.
-   *
-   * @return expireted
-   */
   @Override
   public boolean isAccountNonExpired() {
-    return UserDetails.super.isAccountNonExpired();
+    return true;
   }
 
-  /**
-   * nonlocketed.
-   *
-   * @return nonlocketed
-   */
   @Override
   public boolean isAccountNonLocked() {
-    return UserDetails.super.isAccountNonLocked();
+    return true;
   }
 
-  /**
-   * credentiadent.
-   *
-   * @return credentiated
-   */
   @Override
   public boolean isCredentialsNonExpired() {
-    return UserDetails.super.isCredentialsNonExpired();
+    return true;
   }
 
-  /**
-   * isenabled.
-   *
-   * @return enabled
-   */
   @Override
   public boolean isEnabled() {
-    return UserDetails.super.isEnabled();
+    return true;
   }
 
   @Override
@@ -201,13 +183,8 @@ public class UserRedis implements UserDetails {
         && Objects.equals(role, user.role);
   }
 
-  /**
-   * colect.
-   *
-   * @return collection
-   */
   @Override
-  public Collection<? extends GrantedAuthority> getAuthorities() {
-    return List.of(new SimpleGrantedAuthority(role.getEmail()));
+  public int hashCode() {
+    return Objects.hash(id, username, dataNasc, cpf, email, password, phone, role);
   }
 }
