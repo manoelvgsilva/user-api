@@ -2,14 +2,15 @@ package com.app.user.controller.dto;
 
 import com.app.user.entity.UserRedis;
 import com.app.user.security.Role;
+import java.io.Serializable;
 import java.time.LocalDate;
 
 /**
- * userredisdto.
+ * UserRedisDto.
  *
  * @param id the id
  * @param username the username
- * @param dataNasc the datanasc
+ * @param dataNasc the dataNasc
  * @param cpf the cpf
  * @param email the email
  * @param password the password
@@ -25,13 +26,13 @@ public record UserRedisDto(
     String password,
     String phone,
     Role role
-) {
+) implements Serializable {
 
   /**
-   * entity.
+   * Convert UserRedis to UserRedisDto.
    *
    * @param user the user
-   * @return user
+   * @return UserRedisDto
    */
   public static UserRedisDto fromEntity(UserRedis user) {
     return new UserRedisDto(

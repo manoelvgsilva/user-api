@@ -49,6 +49,18 @@ public class UserRedis implements UserDetails, Serializable {
 
   public UserRedis() {}
 
+  /**
+   * userredis.
+   *
+   * @param id the id
+   * @param username the username
+   * @param dataNasc the datanasc
+   * @param password the password
+   * @param cpf the cpf
+   * @param phone the phone
+   * @param email the email
+   * @param role the role
+   */
   public UserRedis(String id, String username, LocalDate dataNasc,
                    String password, String cpf, String phone,
                    String email, Role role) {
