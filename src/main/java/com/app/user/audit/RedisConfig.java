@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
@@ -14,13 +15,14 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
  */
 @Configuration
 @EnableCaching
+@EnableRedisRepositories(basePackages = "com.app.user.repository")
 public class RedisConfig {
 
   /**
    * redistemplate.
    *
    * @param connectionFactory the connectionfactory
-   * @return connectionfactory
+   * @return connection
    */
   @Bean
   public RedisTemplate<String, UserRedis> redisTemplate(RedisConnectionFactory connectionFactory) {
