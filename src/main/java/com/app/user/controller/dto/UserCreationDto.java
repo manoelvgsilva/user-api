@@ -7,6 +7,7 @@ import java.time.LocalDate;
 /**
  * usercreationdto.
  *
+ * @param typePerson the typeperson
  * @param username the username
  * @param dataNasc the datanasc
  * @param cpf the cfp
@@ -16,13 +17,14 @@ import java.time.LocalDate;
  * @param role the role
  */
 public record UserCreationDto(
-    String username,
-    LocalDate dataNasc,
-    String cpf,
-    String email,
-    String password,
-    String phone,
-    Role role
+        String typePerson,
+        String username,
+        LocalDate dataNasc,
+        String cpf,
+        String email,
+        String password,
+        String phone,
+        Role role
 ) {
 
   /**
@@ -31,6 +33,6 @@ public record UserCreationDto(
    * @return entity
    */
   public User toEntity() {
-    return new User(null, username, dataNasc, password, cpf, phone, email, role);
+    return new User(null, typePerson, username, dataNasc, password, cpf, phone, email, role);
   }
 }

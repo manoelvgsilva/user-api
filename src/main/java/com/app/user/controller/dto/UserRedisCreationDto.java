@@ -7,6 +7,7 @@ import java.time.LocalDate;
 /**
  * usercreationdto.
  *
+ * @param typePerson the typeperson
  * @param username the username
  * @param dataNasc the datanasc
  * @param cpf the cfp
@@ -16,13 +17,14 @@ import java.time.LocalDate;
  * @param role the role
  */
 public record UserRedisCreationDto(
-    String username,
-    LocalDate dataNasc,
-    String cpf,
-    String email,
-    String password,
-    String phone,
-    Role role
+        String typePerson,
+        String username,
+        LocalDate dataNasc,
+        String cpf,
+        String email,
+        String password,
+        String phone,
+        Role role
 ) {
 
   /**
@@ -31,7 +33,7 @@ public record UserRedisCreationDto(
    * @return entity
    */
   public UserRedis toEntity() {
-    return new UserRedis(null, username, dataNasc, password, cpf, phone, email,
+    return new UserRedis(null, typePerson, username, dataNasc, password, cpf, phone, email,
         role);
   }
 }

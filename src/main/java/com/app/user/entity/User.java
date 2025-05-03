@@ -6,6 +6,8 @@ import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
@@ -15,22 +17,32 @@ import org.springframework.security.core.userdetails.UserDetails;
 /**
  * user.
  */
+@Setter
 @Document(collection = "users")
 public class User implements UserDetails {
 
+  @Getter
   @Id
   @Indexed(unique = true)
   private String id;
+  @Getter
+  private String typePerson;
   private String username;
+  @Getter
   private LocalDate dataNasc;
+  @Getter
   @Indexed(unique = true)
   private String cpf;
+  @Getter
   @Indexed(unique = true)
   private String email;
   private String password;
+  @Getter
   @Indexed(unique = true)
   private String phone;
+  @Getter
   private Role role;
+  @Getter
   private String roll;
 
   /**
@@ -42,6 +54,7 @@ public class User implements UserDetails {
    * user.
    *
    * @param id the id
+   * @param typePerson the typeperson
    * @param username the username
    * @param dataNasc the datanasc
    * @param password the password
@@ -50,11 +63,12 @@ public class User implements UserDetails {
    * @param email the email
    * @param role the role
    */
-  public User(String id, String username, LocalDate dataNasc, String password,
+  public User(String id, String typePerson, String username, LocalDate dataNasc, String password,
               String cpf,
               String phone, String email,
               Role role) {
     this.id = id;
+    this.typePerson = typePerson;
     this.username = username;
     this.dataNasc = dataNasc;
     this.cpf = cpf;
@@ -84,88 +98,14 @@ public class User implements UserDetails {
     return true;
   }
 
-  public void setId(String id) {
-    this.id = id;
-  }
-
-  public String getId() {
-    return id;
-  }
-
-  public void setUsername(String username) {
-    this.username = username;
-  }
-
-  /**
-   * username.
-   *
-   * @return username
-   */
   @Override
   public String getUsername() {
     return username;
   }
 
-  public void setDataNasc(LocalDate dataNasc) {
-    this.dataNasc = dataNasc;
-  }
-
-  public LocalDate getDataNasc() {
-    return dataNasc;
-  }
-
-  public void setCpf(String cpf) {
-    this.cpf = cpf;
-  }
-
-  public String getCpf() {
-    return cpf;
-  }
-
-  public void setEmail(String email) {
-    this.email = email;
-  }
-
-  public String getEmail() {
-    return email;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
-  }
-
-  /**
-   * password.
-   *
-   * @return password
-   */
   @Override
   public String getPassword() {
     return password;
-  }
-
-  public void setPhone(String phone) {
-    this.phone = phone;
-  }
-
-  public String getPhone() {
-    return phone;
-  }
-
-  public void setRole(Role role) {
-    this.role = role;
-  }
-
-  public Role getRole() {
-    return role;
-  }
-
-  public void setRoll(String roll) {
-    this.roll = roll;
-  }
-
-  public String getRoll() {
-    return roll;
   }
 
   @Override
@@ -178,13 +118,14 @@ public class User implements UserDetails {
     }
     User user = (User) o;
     return Objects.equals(id, user.id)
-        && Objects.equals(username, user.username)
-        && Objects.equals(dataNasc, user.dataNasc)
-        && Objects.equals(cpf, user.cpf)
-        && Objects.equals(email, user.email)
-        && Objects.equals(password, user.password)
-        && Objects.equals(phone, user.phone)
-        && Objects.equals(role, user.role);
+            && Objects.equals(typePerson, user.typePerson)
+            && Objects.equals(username, user.username)
+            && Objects.equals(dataNasc, user.dataNasc)
+            && Objects.equals(cpf, user.cpf)
+            && Objects.equals(email, user.email)
+            && Objects.equals(password, user.password)
+            && Objects.equals(phone, user.phone)
+            && Objects.equals(role, user.role);
   }
 
   /**

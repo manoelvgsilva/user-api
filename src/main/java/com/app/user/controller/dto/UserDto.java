@@ -7,6 +7,7 @@ import java.time.LocalDate;
 /**
  * userdto.
  *
+ * @param typePerson the typeperson
  * @param id the id
  * @param username the username
  * @param dataNasc the datanasc
@@ -18,6 +19,7 @@ import java.time.LocalDate;
  */
 public record UserDto(
     String id,
+    String typePerson,
     String username,
     LocalDate dataNasc,
     String cpf,
@@ -36,6 +38,7 @@ public record UserDto(
   public static UserDto fromEntity(User user) {
     return new UserDto(
         user.getId(),
+        user.getTypePerson(),
         user.getUsername(),
         user.getDataNasc(),
         user.getCpf(),

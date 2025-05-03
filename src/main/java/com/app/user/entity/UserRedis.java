@@ -6,6 +6,8 @@ import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
@@ -17,34 +19,46 @@ import org.springframework.security.core.userdetails.UserDetails;
 /**
  * Entidade UserRedis para armazenamento no Redis.
  */
+@Setter
 @Primary
 @RedisHash("userredis")
 public class UserRedis implements UserDetails, Serializable {
 
   private static final long serialVersionUID = 1L;
 
+  @Getter
   @Id
   @Indexed
   private String id;
 
+  @Getter
+  @Indexed
+  private String typePerson;
+
   @Indexed
   private String username;
 
+  @Getter
   private LocalDate dataNasc;
 
+  @Getter
   @Indexed
   private String email;
 
+  @Getter
   @Indexed
   private String cpf;
 
   private String password;
 
+  @Getter
   @Indexed
   private String phone;
 
+  @Getter
   private Role role;
 
+  @Getter
   private String roll;
 
   public UserRedis() {}
@@ -53,6 +67,7 @@ public class UserRedis implements UserDetails, Serializable {
    * userredis.
    *
    * @param id the id
+   * @param typePerson the typeperson
    * @param username the username
    * @param dataNasc the datanasc
    * @param password the password
@@ -61,10 +76,11 @@ public class UserRedis implements UserDetails, Serializable {
    * @param email the email
    * @param role the role
    */
-  public UserRedis(String id, String username, LocalDate dataNasc,
+  public UserRedis(String id, String typePerson, String username, LocalDate dataNasc,
                    String password, String cpf, String phone,
                    String email, Role role) {
     this.id = id;
+    this.typePerson = typePerson;
     this.username = username;
     this.dataNasc = dataNasc;
     this.cpf = cpf;
@@ -72,14 +88,6 @@ public class UserRedis implements UserDetails, Serializable {
     this.password = password;
     this.phone = phone;
     this.role = role;
-  }
-
-  public String getId() {
-    return id;
-  }
-
-  public void setId(String id) {
-    this.id = id;
   }
 
   @Override
@@ -87,69 +95,15 @@ public class UserRedis implements UserDetails, Serializable {
     return username;
   }
 
-  public void setUsername(String username) {
-    this.username = username;
-  }
-
-  public LocalDate getDataNasc() {
-    return dataNasc;
-  }
-
-  public void setDataNasc(LocalDate dataNasc) {
-    this.dataNasc = dataNasc;
-  }
-
-  public String getCpf() {
-    return cpf;
-  }
-
-  public void setCpf(String cpf) {
-    this.cpf = cpf;
-  }
-
-  public String getEmail() {
-    return email;
-  }
-
-  public void setEmail(String email) {
-    this.email = email;
-  }
-
   @Override
   public String getPassword() {
     return password;
   }
 
-  public void setPassword(String password) {
-    this.password = password;
-  }
-
-  public String getPhone() {
-    return phone;
-  }
-
-  public void setPhone(String phone) {
-    this.phone = phone;
-  }
-
-  public Role getRole() {
-    return role;
-  }
-
-  public void setRole(Role role) {
-    this.role = role;
-  }
-
-  public String getRoll() {
-    return roll;
-  }
-
-  public void setRoll(String roll) {
-    this.roll = roll;
-  }
-
   /**
-   * Retorna as autoridades do usuário com base no seu papel (role).
+   * authorities.
+   *
+   * @return author
    */
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -186,6 +140,7 @@ public class UserRedis implements UserDetails, Serializable {
     }
     UserRedis user = (UserRedis) o;
     return Objects.equals(id, user.id)
+            && Objects.equals(typePerson, user.typePerson)
         && Objects.equals(username, user.username)
         && Objects.equals(dataNasc, user.dataNasc)
         && Objects.equals(cpf, user.cpf)
@@ -197,6 +152,6 @@ public class UserRedis implements UserDetails, Serializable {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, username, dataNasc, cpf, email, password, phone, role);
+    return Objects.hash(id, typePerson, username, dataNasc, cpf, email, password, phone, role);
   }
 }

@@ -9,6 +9,7 @@ import java.time.LocalDate;
  * UserRedisDto.
  *
  * @param id the id
+ * @param typePerson the typeperson
  * @param username the username
  * @param dataNasc the dataNasc
  * @param cpf the cpf
@@ -19,6 +20,7 @@ import java.time.LocalDate;
  */
 public record UserRedisDto(
     String id,
+    String typePerson,
     String username,
     LocalDate dataNasc,
     String cpf,
@@ -37,6 +39,7 @@ public record UserRedisDto(
   public static UserRedisDto fromEntity(UserRedis user) {
     return new UserRedisDto(
         user.getId(),
+        user.getTypePerson(),
         user.getUsername(),
         user.getDataNasc(),
         user.getCpf(),
